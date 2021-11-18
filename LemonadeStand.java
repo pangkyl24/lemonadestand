@@ -23,6 +23,11 @@ public class LemonadeStand extends Pad
 		
 	Text showFunds;
 	
+	boolean gamePlaying;
+	String gamePhase;
+	
+	int weatherScore;
+	
 	
 	
 	//Define constructor to set up the UI
@@ -91,10 +96,23 @@ public class LemonadeStand extends Pad
 		
 		showFunds = new Text("Funds: $" + String.format("%.2f", funds), 300, 50, 30);
 		
-		boolean gamePlaying = true;
-		String gamePhase = "buying";
+		gamePlaying = true;
+		gamePhase = "buying";
+		
+		Rectangle endGame = new Rectangle(525, 100, 100, 30);
+		Text endText = new Text("End Game", 530, 110, 15);
+		
+		Text showWeather = new Text("", 25, 150, 20);
+		
+		Rectangle nextPhase = new Rectangle(525, 150, 100, 30);
+		Text nextPhaseText = new Text("Next", 530, 160, 15);
+		
 		
 		do{ // Play Game Method[][][]
+			
+			//Set Weather Conditions
+			weatherScore = (int)(Math.random()*100) + 1;
+			showWeather.setText("Weather Score for today: " + weatherScore);
 			
 			while (gamePhase.equals("buying")){
 				
@@ -103,6 +121,8 @@ public class LemonadeStand extends Pad
 				buySugar.setMouseClickedHandler( this::sugarbuy );
 				buyCups.setMouseClickedHandler( this::cupsbuy );
 				
+				endGame.setMouseClickedHandler( this::end );
+				nextPhase.setMouseClickedHandler( this::selling );			
 			}
 			
 			
@@ -157,6 +177,14 @@ public class LemonadeStand extends Pad
 			
 		}
 		updateInventory();
+	}
+	public void end(Shape shp, double x, double y, int button){
+		gamePlaying = false;
+		gamePhase = "end";
+		System.out.println("Game Over");
+	}
+	public void selling(Shape shp, double x, double y, int button){
+		gamePhase = "selling";
 	}
 	
 	
